@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hand Detection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Karla', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #E9E8E8;
+    }
+
+    .header {
+      height: 72px;
+      background: white;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 120px;
+    }
+
+    .header-link {
+      font-size: 16px;
+      color: #000000;
+      text-decoration: none;
+      margin-right: 200px;
+    }
+
+    .header-link:hover {
+      text-decoration: underline;
+      color: #E3A2F4;
+    }
+
+    .header-logo {
+      width: 300px;
+      height: 36px;
+    }
+
+    .header-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .container {
+      display: flex;
+      height: calc(100vh - 72px);
+      justify-content: center;
+      align-items: stretch;
+      min-height: 600px;
+    }
+
+    .left-column, .right-column {
+      flex: 1;
+      width: 50%;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      display: flex;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    .left-column {
+      background: #F6F6F6;
+      border-right: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    .right-column {
+      background: #F6F6F6;
+      padding: 20px;
+    }
+
+    .webcam-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #407DFF;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #webcam {
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1);
+      object-fit: cover;
+      border-radius: 12px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #output-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1);
+      object-fit: cover;
+      border-radius: 12px;
+      z-index: 2;
+    }
+
+    .hand-model-container {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      background: #407DFF;
+      border-radius: 12px;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    #sketch1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      z-index: 1;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .instruction-text {
+      position: absolute;
+      top: 150px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-family: 'Karla', sans-serif;
+      font-size: 14px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .play-pause-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background-color 0.3s ease;
+    }
+
+    .play-pause-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .instruction-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #E3A2F4;
+      padding: 60px 60px;
+      border-radius: 12px;
+      text-align: center;
+      z-index: 60;
+      transition: opacity 0.3s ease;
+      width: 60%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .instruction-box h2 {
+      font-family: 'Karla', sans-serif;
+      color: white;
+      font-size: 30px;
+      margin: 0 0 20px 0;
+      font-weight: 700;
+    }
+
+    .instruction-box p {
+      font-family: 'Karla', sans-serif;
+      color: white;
+      font-size: 24px;
+      margin: 0;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    .gesture-label {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: 'Karla', sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+  </style>
+  <!-- Add TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <!-- Add your live prediction script -->
+  <script src="../gesturerecognition/webcam_inference/live_prediction.js"></script>
+</head>
+<body>
+  <div class="header">
+    <div class="header-logo">
+      <img src="../assets/svgs/icons/craficulate_recipe.svg" alt="Craficulate Recipe">
+    </div>
+    <a href="../gestures.html" class="header-link">Gesture Gallery</a>
+  </div>
+
+  <div class="container">
+    <div class="left-column">
+      <div class="hand-model-container">
+        <div id="sketch1"></div>
+        <div class="instruction-text">
+          <p>Zoom & Rotate the model to see the gesture</p>
+        </div>
+      </div>
+    </div>
+    <div class="right-column">
+      <div class="webcam-container">
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="output-canvas"></canvas>
+        <div id="instruction" class="instruction-box">
+          <h2>To get started</h2>
+          <p>Hold your hand up where<br>the camera can see it</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  
+  <!-- Load application code -->
+  <script src="../3dhands/pinch2.js"></script>
+  <script src="pinching_webcam.js"></script>
+
+  <script>
+    // Initialize the 3D model
+    const HAND_CONNECTIONS = [
+      [0, 1], [1, 2], [2, 3], [3, 4], // Thumb
+      [0, 5], [5, 6], [6, 7], [7, 8], // Index
+      [5, 9], [9, 10], [10, 11], [11, 12], // Middle
+      [9, 13], [13, 14], [14, 15], [15, 16], // Ring
+      [13, 17], [17, 18], [18, 19], [19, 20], // Pinky
+      [0, 17] // Palm
+    ];
+
+    function getHostElement(selector="#sketch") {
+      return document.querySelector(selector);
+    }
+
+    function getCanvasSize(selector="#sketch") {
+      const host = getHostElement(selector);
+      if (!host) {
+        return { width: window.innerWidth * 0.5, height: window.innerHeight - 72 };
+      }
+      const rect = host.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    }
+
+    function createSketch(selector, createSketchFun) {
+      const host = getHostElement(selector);
+      new p5(createSketchFun(selector), host);
+    }
+
+    // Start when page loads
+    window.addEventListener('load', () => {
+      createSketch('#sketch1', pinch2);
+    });
+  </script>
+</body>
+</html>

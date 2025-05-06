@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pottery Gestures</title>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      background-color: #E9E8E8;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Karla', sans-serif;
+    }
+    .grid-container {
+      width: 837px;
+      height: 477px;
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: repeat(8, 71.5px);
+      grid-template-rows: 100px repeat(5, 74.8px);
+      column-gap: 57px;
+      row-gap: 60px;
+      justify-content: center;
+      align-content: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-right: 100px;
+      padding-top: 20px;
+    }
+
+    .gesture-svg {
+      width: 95px;
+      height: 100px;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .gesture-svg img {
+      width: 95px;
+      height: 100px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .gesture-tile {
+      width: 95px;
+      height: 100px;
+      background: #FFF;
+      border-radius: 20px;
+      border: 1px solid #DCDCDC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gesture-name {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: 'Karla', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000000;
+      background: rgba(255, 255, 255, 0.95);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      padding: 8px;
+      z-index: 2;
+      white-space: pre-line;
+      line-height: 1.2;
+    }
+
+    .gesture-tile:hover .gesture-name {
+      opacity: 1;
+    }
+
+    .gesture-tile:hover {
+      transform: scale(1.05);
+    }
+
+    .category-tile {
+      width: 95px;
+      height: 100px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s;
+      grid-row: 1;
+    }
+
+    .category-tile:hover {
+      transform: scale(1.1);
+    }
+
+    .category-tile.active {
+      background-color: #E3A2F4;
+    }
+
+    .category-svg {
+      width: 95px;
+      height: 100px;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .category-svg img {
+      width: 95px;
+      height: 100px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .bottom-strip {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background-color: #FFFFFF;
+      border-color: black;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-text {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+      font-family: 'Karla', sans-serif;
+      font-size: 18px;
+      color: #000000;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .gesture-link {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .gesture-link:focus {
+      outline: none;
+    }
+
+    .gesture-link:focus .gesture-tile {
+      background-color: #E3A2F4;
+    }
+
+    .gallery-button {
+      position: fixed;
+      bottom: 200px;
+      left: 1670px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #000;
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-button:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-icon {
+      width: 95px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+
+    .gallery-label {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <!-- Tiles will be added by JavaScript -->
+  </div>
+  
+  <div class="bottom-strip">
+    <div class="marquee-text">
+       Crafticulate --- คราฟติคูเลต --- A digital museum that organizes pottery gestures by their role in the making process, focusing on how movements shape material rather than static objects.
+    </div>
+  </div>
+
+  <a href="gestures/creationgallery.html" class="gallery-button">
+    <img src="assets/svgs/icons/gallery.svg" alt="Creation Gallery" class="gallery-icon">
+    <span class="gallery-label"></span>
+  </a>
+
+  <script src="gestures.js"></script>
+</body>
+</html>

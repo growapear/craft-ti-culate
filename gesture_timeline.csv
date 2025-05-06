@@ -1,0 +1,17 @@
+Application,Application,timeline_index,Gesture Name,icon_name,Stage
+"Bowl, Plate, Tile",Bowl,1,Stamping,stamping,Decorating
+"Plate, Bowl",Bowl,2,Slip Trailing,sliptrailing,Decorating
+"Vase, Mug, Bowl",Bowl,3,Rim Smoothing,rimsmoothing,Finishing
+"Vase, Bowl, Mug",Bowl,4,Pulling Walls,pullingwalls,Shaping
+"Jar, Bowl",Bowl,5,Wall Compression,wallcompression,Shaping
+Bowl,Bowl,6,Rib Shaping (outside),ribshapingoutside,Shaping
+Bowl,Bowl,7,Rib Shaping (inside),ribshapinginside,Shaping
+"Bowl, Cup",Bowl,8,Pinching,pinching,Shaping
+"Bowl, Jar",Bowl,9,Trimming Setup (with fingers),trimmingsetupwithfingers,Trimming
+"Jar, Bowl",Jar,1,Wall Compression,wallcompression,Shaping
+"Bowl, Jar",Jar,2,Trimming Setup (with fingers),trimmingsetupwithfingers,Trimming
+"Vase, Dish",Vase,1,Incising,incising,Decorating
+"Vase, Mug, Bowl",Vase,2,Rim Smoothing,rimsmoothing,Finishing
+"Vase, Pot",Vase,3,Blending Coils,blendingcoils,Joining
+"Vase, Bowl, Mug",Vase,4,Pulling Walls,pullingwalls,Shaping
+"Vase, Pot",Vase,5,Coiling,coiling,Shaping

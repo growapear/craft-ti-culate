@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bowl Making Process</title>
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #E9E8E8;
+      margin: 0;
+      padding: 20px;
+      font-family: 'Karla', sans-serif;
+    }
+
+    .timeline-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 150px;
+      padding-top: 500px;
+      overflow-x: auto;
+      width: 100%;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .gesture-tile {
+      width: 100px;
+      height: 100px;
+      background: white;
+      border-radius: 12px;
+      position: relative;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gesture-svg {
+      width: 100px;  
+      height: 100px;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .gesture-name {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: 'Karla', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000000;
+      background: rgba(255, 255, 255, 0.95);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      padding: 8px;
+      z-index: 2;
+      border-radius: 12px;
+    }
+
+    .gesture-tile:hover .gesture-name {
+      opacity: 1;
+    }
+
+    .gesture-tile:hover {
+      transform: scale(1.05);
+    }
+
+    .bottom-strip {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background-color: #FFFFFF;
+      border-color: black;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-text {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+      font-family: 'Karla', sans-serif;
+      font-size: 18px;
+      color: #000000;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .header {
+      width: 100%;
+      height: 72px;
+      flex-shrink: 0;
+      border: 1px solid #B7B3B3;
+      background: #FFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 120px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    .header-logo {
+      width: 300px;  /* Adjust size as needed */
+      height: 36px;
+    }
+
+    .header-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .header-title {
+      font-family: 'Karla', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #000000;
+    }
+
+    .header-link {
+      font-family: 'Karla', sans-serif;
+      font-size: 16px;
+      color: #000000;
+      text-decoration: none;
+      margin-right: 200px;
+    }
+
+    .header-link:hover {
+      text-decoration: underline;
+      color: #E3A2F4;
+    }
+
+    .recipe-title-container {
+      width: 388px;
+      height: 84px;
+      flex-shrink: 0;
+      position: absolute;
+      top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 80px;
+    }
+
+    .recipe-title {
+      width: 307px;
+      height: 31px;
+      flex-shrink: 0;
+      color: #1C1A2B;
+      text-align: center;
+      font-family: Karla;
+      font-size: 28px;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 115%; /* 32.2px */
+      letter-spacing: -0.308px;
+      position: static;
+      transform: none;
+    }
+
+    .recipe-icon-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 60px;
+    }
+
+    .recipe-icon {
+      width: 388px;
+      height: 84px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .recipe-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .next-icon-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding-top: 1px;
+      pointer-events: none;
+    }
+
+    .next-icon-link {
+      text-decoration: none;
+      color: inherit;
+      display: inline-block;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+
+    .next-icon-container:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    .next-icon-link:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    .next-icon-link:hover .next-text {
+      color: #E3A2F4;
+    }
+
+    .next-icon {
+      width: 84px;
+      height: 82px;
+      flex-shrink: 0;
+    }
+
+    .next-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .next-text {
+      color: #1E1E1E;
+      font-family: Karla;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .connector {
+      width: 42px;
+      height: 24px;  /* Give some height for the arrow to be visible */
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .connector img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .step-number {
+      position: absolute;
+      bottom: -20px;  /* Position below the tile */
+      left: 50%;
+      transform: translateX(-50%);
+      color: #1E1E1E;
+      text-align: center;
+      font-family: Karla;
+      font-size: 17px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 150%;
+      letter-spacing: -0.2px;
+    }
+
+    .gesture-link {
+      position: relative;
+      text-decoration: none;
+      padding-bottom: 40px;  /* Make room for step number */
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-logo">
+      <img src="assets/svgs/icons/craficulate_recipe.svg" alt="Craficulate Recipe">
+    </div>
+    <a href="gestures.html" class="header-link">Gesture Gallery</a>
+  </div>
+
+  <div class="recipe-title-container">
+    <div class="recipe-title">Let's make (a)</div>
+    <div class="recipe-icon-container">
+      <div class="recipe-icon">
+        <img src="assets/svgs/icons/bowl.svg" alt="Bowl">
+      </div>
+      <a href="gestures.html" class="next-icon-link">
+        <div class="next-icon-container">
+          <div class="next-icon">
+            <img src="assets/svgs/icons/next.svg" alt="Next">
+          </div>
+          <div class="next-text">(next)</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="timeline-container" id="timeline">
+    <!-- Tiles will be added by JavaScript -->
+  </div>
+
+  <div class="bottom-strip">
+    <div class="marquee-text">
+      Crafticulate --- คราฟติคูเลต --- A digital museum that organizes pottery gestures by their role in the making process, focusing on how movements shape material rather than static objects.
+    </div>
+  </div>
+
+  <script>
+    // First fetch the filtered gestures CSV to get metadata
+    fetch('filteredgestures.csv')
+      .then(response => response.text())
+      .then(data => {
+        const gestureRows = data.split('\n').map(row => row.split(','));
+        const gestureMetadata = new Map();
+        
+        // Skip header row and create metadata map
+        gestureRows.slice(1).forEach(gesture => {
+          const [filename, category, name, description] = gesture;
+          gestureMetadata.set(filename, { category, name, description });
+        });
+
+        // Then load and process the bowl gestures
+        return fetch('subcat/bowl_gestures.csv')
+          .then(response => response.text())
+          .then(csv => {
+            const rows = csv.split('\n')
+              .slice(1)
+              .filter(row => row.trim().length > 0);
+            
+            const timeline = document.getElementById('timeline');
+            
+            rows.forEach((row, index) => {
+              const [name, filename] = row.split(',');
+              
+              // Create link wrapper
+              const link = document.createElement('a');
+              link.href = `gestures/${filename}.html`;
+              link.className = 'gesture-link';
+              
+              // Create gesture tile
+              const tile = document.createElement('div');
+              tile.className = 'gesture-tile';
+              
+              // Add step number
+              const stepNumber = document.createElement('div');
+              stepNumber.className = 'step-number';
+              stepNumber.textContent = `Step ${index + 1}`;
+              link.appendChild(stepNumber);
+              
+              // Create SVG wrapper and image
+              const svgWrapper = document.createElement('div');
+              svgWrapper.className = 'gesture-svg';
+              
+              const img = document.createElement('img');
+              img.src = `assets/svgs/icons/${filename}.svg`;
+              img.alt = name;
+              
+              // Add metadata if available
+              const metadata = gestureMetadata.get(filename);
+              if (metadata) {
+                const gestureName = document.createElement('div');
+                gestureName.className = 'gesture-name';
+                gestureName.textContent = metadata.name;
+                tile.appendChild(gestureName);
+              }
+              
+              // Assemble the elements
+              svgWrapper.appendChild(img);
+              tile.appendChild(svgWrapper);
+              link.appendChild(tile);
+              timeline.appendChild(link);
+              
+              // Add connector line between tiles (except last)
+              if (index < rows.length - 1) {
+                const connector = document.createElement('div');
+                connector.className = 'connector';
+                
+                const arrow = document.createElement('img');
+                arrow.src = 'assets/svgs/icons/arrow.svg';
+                arrow.alt = 'Next step';
+                
+                connector.appendChild(arrow);
+                timeline.appendChild(connector);
+              }
+            });
+          });
+      });
+  </script>
+</body>
+</html>

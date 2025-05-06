@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Gesture demo</title>
+<style>
+  body{margin:0;font-family:sans-serif;background:#111}
+  #outputCanvas{position:absolute;top:0;left:0}
+  #gestureText{position:absolute;top:10px;left:10px;font-size:24px;
+               color:lime;font-weight:bold}
+  #instruction{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+               background:#E3A2F4;padding:18px 32px;border-radius:8px;
+               color:#111;font-size:20px;text-align:center}
+  #wrapper{position:relative;width:640px;margin:32px auto}
+</style>
+
+<!-- TensorFlow & MediaPipe (via CDN builds – NO bundler needed) -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection@0.0.7/dist/hand-pose-detection.min.js"></script>
+</head>
+<body>
+
+<div id="wrapper">
+  <video id="webcam" width="640" height="480" style="display:none"></video>
+  <canvas id="outputCanvas" width="640" height="480"></canvas>
+
+  <div id="instruction">Show your hand</div>
+  <div id="gestureText" style="display:none">Loading…</div>
+</div>
+
+<script type="module" src="js/live_prediction.js"></script>
+</body>
+</html>

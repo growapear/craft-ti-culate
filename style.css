@@ -1,0 +1,233 @@
+body {
+    margin: 0;
+    background-color: #E9E8E8;
+    font-family: 'Karla', sans-serif;
+    height: 100dvh;
+    width: 100dvw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .tile-wrapper {
+    position: relative;
+    width: 900px;
+    height: 600px;
+    overflow: visible;
+  }
+  
+  .tile {
+    position: absolute;
+    width: 85px;
+    height: 85px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+    animation: bounce 3s ease-in-out infinite;
+    cursor: pointer;
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #DCDCDC;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  /* Special styling for text tiles */
+  .tile[style*="width"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .tile[style*="width"] img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    padding: 0;
+  }
+  
+  .tile.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  /* Pop-up animation */
+  @keyframes popIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.5) translateY(20px);
+    }
+    70% {
+      transform: scale(1.1) translateY(-5px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  /* Add pop-in animation when removing hidden class */
+  .tile:not(.hidden) {
+    animation: popIn 0.5s ease-out forwards, 
+               bounce 3s ease-in-out infinite;
+  }
+  
+  /* Subtle bounce animation */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-6px);
+    }
+    60% {
+      transform: translateY(-4px);
+    }
+    80% {
+      transform: translateY(-2px);
+    }
+  }
+  
+  /* Stagger the bounce timing for each tile */
+  .tile:nth-child(3n) {
+    animation-delay: 0s;
+  }
+  .tile:nth-child(3n+1) {
+    animation-delay: 0.5s;
+  }
+  .tile:nth-child(3n+2) {
+    animation-delay: 1s;
+  }
+  
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 0;
+    pointer-events: none;
+  }
+  
+  /* Add shuffle transition */
+  .tile.shuffling {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: none; /* Pause bounce animation during shuffle */
+  }
+  
+  .tile.fade-out {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.5s ease-out;
+  }
+  
+  .tile.new-tile {
+    opacity: 0;
+    transform: translateY(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .tile.new-tile:not(.shuffling) {
+    transition: all 0.5s ease-in;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .info-text {
+    color: #333;
+    line-height: 1.5;
+    font-weight: 400;
+    transition: opacity 0.3s ease;
+    width: 100%;
+    max-width: 500px;
+    z-index: 1000;
+    position: fixed;
+    pointer-events: none;
+  }
+  
+  .tile-wrapper a {
+    display: block;
+    text-decoration: none;
+  }
+  
+  .tile-wrapper a .tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  .tile-wrapper a .tile:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(10, auto);
+    column-gap: 10px;
+    row-gap: 10px;  /* Smaller gap between rows */
+    position: relative;
+  }
+  
+  .category-tile {
+    margin: 0;
+    padding: 0;
+    height: 50%;
+    width: 100%;
+  }
+  
+  .category-svg {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+/* Subcategory button styling */
+.subcategory-btn {
+  width: 112px;
+  height: 23px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  border: 1px solid #DCDCDC;
+  background-color: #FFE090 !important; /* Force the background color */
+  color: #1C1A2C;
+  text-align: center;
+  font-family: 'Karla', sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Override any browser default styles */
+button.subcategory-btn {
+  background-color: #FFE090 !important;
+}
+
+.subcategory-btn:hover {
+  background-color: #FFE090 !important;
+}
+
+.subcategory-btn.selected {
+  background-color: #FFE090 !important;
+}
+  
+  
+  
